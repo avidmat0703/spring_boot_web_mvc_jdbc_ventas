@@ -73,5 +73,4 @@ public class SpringBootWebMvcJdbcVentasApplication implements CommandLineRunner{
 		log.info("************************************");
 		
 	}
-
 }
