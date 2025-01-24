@@ -2,34 +2,34 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Crear Comercial</title>
+    <title th:text="#{msg.title.crearcomercial}"></title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
 </head>
 <body class="bg-primary text-white">
 <div class="container mt-5">
     <form th:action="@{/comerciales/crear}" th:object="${comercial}" method="post">
         <div class="d-flex justify-content-between align-items-center mb-4">
-            <h1 class="text-white">Crear Comercial</h1>
-            <button class="btn btn-lg text-white" style="background-color: indigo">Crear</button>
+            <h1 class="text-white" th:text="#{msg.title.crearcomercial}">l</h1>
+            <button class="btn btn-lg text-white" style="background-color: indigo" th:text="#{msg.Crear.crearcliente}"></button>
         </div>
 
         <div class="mb-3">
-            <label class="form-label text-white">Nombre</label>
+            <label class="form-label text-white" th:text="#{msg.trNombre.comerciales}"></label>
             <input type="text" th:field="*{nombre}" class="form-control" />
         </div>
 
         <div class="mb-3">
-            <label class="form-label text-white">Apellido 1</label>
+            <label class="form-label text-white" th:text="#{msg.trApellido1.comerciales}"></label>
             <input type="text" th:field="*{apellido1}" class="form-control" />
         </div>
 
         <div class="mb-3">
-            <label class="form-label text-white">Apellido 2</label>
+            <label class="form-label text-white" th:text="#{msg.trApellido2.comerciales}"></label>
             <input type="text" th:field="*{apellido2}" class="form-control" />
         </div>
 
         <div class="mb-3">
-            <label class="form-label text-white">Comisión</label>
+            <label class="form-label text-white" th:text="#{msg.trComision.comerciales}"></label>
             <input type="number" th:field="*{comision}" class="form-control" />
         </div>
     </form>
