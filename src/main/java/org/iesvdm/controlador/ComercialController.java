@@ -1,5 +1,7 @@
 package org.iesvdm.controlador;
 
+import org.iesvdm.dto.ComercialDTO;
+import org.iesvdm.dto.PedidoDTO;
 import org.iesvdm.modelo.Cliente;
 import org.iesvdm.modelo.Comercial;
 import org.iesvdm.modelo.Pedido;
@@ -13,7 +15,13 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.view.RedirectView;
+
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Controller
 public class ComercialController {
@@ -21,13 +29,16 @@ public class ComercialController {
     private ComercialService comercialService;
 
     @Autowired
-    private ClienteService clienteService;
+    ClienteService clienteService;
 
+    //Se utiliza inyección automática por constructor del framework Spring.
+    //Por tanto, se puede omitir la anotación Autowired
+    //@Autowired
     public ComercialController(ComercialService comercialService) {
         this.comercialService = comercialService;
     }
 
-    @GetMapping("/comerciales")
+    @GetMapping("/comerciales") //Al no tener ruta base para el controlador, cada método tiene que tener la ruta completa
     public String listar(Model model) {
 
         List<Comercial> listaComerciales =  comercialService.listAll();
@@ -40,17 +51,37 @@ public class ComercialController {
     @GetMapping("/comerciales/{id}")
     public String detalle(Model model, @PathVariable Integer id) {
 
-        Cliente cliente = clienteService.one(id);
-        Comercial comercial = comercialService.one(id);
-        List<Pedido> pedidos = comercialService.listAllPedidos();
-        model.addAttribute("cliente", cliente);
-        model.addAttribute("comercial", comercial);
+        ComercialDTO comercialDTO = comercialService.getComercialDTO(id);
+        List<PedidoDTO> pedidos = comercialService.listAllPedidosDTOByComercialId(id);
+        Map<Cliente, Double> totalPorCliente = new HashMap<>();
+
+        for (PedidoDTO pedido : pedidos){
+            Cliente cliente = clienteService.one(pedido.getId_cliente());
+            double sumtotal = clienteService.getSumTotalPedidos(cliente.getId());
+            totalPorCliente.put(cliente, sumtotal);
+        }
+
+        // Ordenar el mapa de mayor a menor por el total
+        Map<Cliente, Double> sortedTotalPorCliente = totalPorCliente.entrySet()
+                .stream()
+                .sorted(Map.Entry.<Cliente, Double>comparingByValue().reversed())
+                .collect(Collectors.toMap(
+                        entry -> entry.getKey(),
+                        entry -> entry.getValue(),
+                        (e1, e2) -> e1,
+                        LinkedHashMap::new
+                ));
+
+        model.addAttribute("clientes", sortedTotalPorCliente);
+        model.addAttribute("comercial", comercialDTO);
         model.addAttribute("pedidos", pedidos);
 
         return "detalle-comercial";
     }
 
-    @GetMapping("/comerciales/crear")
+
+
+    @GetMapping("/comerciales/crear") //Al no tener ruta base para el controlador, cada método tiene que tener la ruta completa
     public String crear(@ModelAttribute("comercial") Comercial comercial) {
 
         return "crear-comercial";
@@ -93,4 +124,5 @@ public class ComercialController {
     public String test() {
         return "test";
     }
+
 }

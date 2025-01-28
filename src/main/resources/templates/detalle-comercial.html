@@ -6,6 +6,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
 </head>
 <body class="bg-primary text-white">
+
 <div class="container mt-5">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h1 class="text-white" th:text="#{msg.title.detallecomercial}"></h1>
@@ -15,39 +16,82 @@
     </div>
 
     <div class="mb-3">
-        <label class="form-label" th:text="#{msg.inputCodigo.detallecliente}"></label>
-        <input type="text" th:value="${comercial.id}" value="Código" class="form-control" readonly="readonly"/>
+        <label class="form-label text-white">Código</label>
+        <input type="text" th:value="${comercial.comercial.id}" class="form-control" readonly="readonly"/>
     </div>
 
     <div class="mb-3">
-        <label class="form-label" th:text="#{msg.trNombre.comerciales}"></label>
-        <input type="text" th:value="${comercial.nombre}" value="Nombre" class="form-control" readonly="readonly"/>
+        <label class="form-label text-white" th:text="#{msg.trNombre.comerciales}"></label>
+        <input type="text" th:value="${comercial.comercial.nombre}" class="form-control" readonly="readonly"/>
     </div>
 
     <div class="mb-3">
-        <label class="form-label" th:text="#{msg.trApellido1.comerciales}"></label>
-        <input type="text" th:value="${comercial.apellido1}" value="Apellido1" class="form-control" readonly="readonly"/>
+        <label class="form-label text-white" th:text="#{msg.trApellido1.comerciales}"></label>
+        <input type="text" th:value="${comercial.comercial.apellido1}" class="form-control" readonly="readonly"/>
     </div>
 
     <div class="mb-3">
-        <label class="form-label" th:text="#{msg.trApellido2.comerciales}"></label>
-        <input type="text" th:value="${comercial.apellido2}" value="Apellido2" class="form-control" readonly="readonly"/>
+        <label class="form-label text-white" th:text="#{msg.trApellido2.comerciales}"></label>
+        <input type="text" th:value="${comercial.comercial.apellido2}" class="form-control" readonly="readonly"/>
     </div>
 
     <div class="mb-3">
-        <label class="form-label" th:text="#{msg.trComision.comerciales}"></label>
-        <input type="text" th:value="${comercial.comision}" value="comisión" class="form-control" readonly="readonly"/>
+        <label class="form-label text-white" th:text="#{msg.trComision.comerciales}"></label>
+        <input type="text" th:value="${comercial.comercial.comision}" class="form-control" readonly="readonly"/>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label text-white" th:text="#{msg.total.comercial}"></label>
+        <input type="text" th:value="${comercial.total}" class="form-control" readonly="readonly"/>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label text-white" th:text="#{msg.media.comercial}"></label>
+        <input type="text" th:value="${comercial.media}" class="form-control" readonly="readonly"/>
+    </div>
+
+    <div class="mb-3 rounded border p-3 bg-dark bg-gradient">
+        <span class="badge text-success" th:text="#{msg.verde.comercial}"></span>
+        <br>
+        <span class="badge text-warning" th:text="#{msg.amarillo.comercial}"></span>
     </div>
 </div>
 
 <div class="container">
     <h3 class="text-white" th:text="#{msg.pedido.comercial}"></h3>
     <ul class="list-group">
-        <li class="list-group-item bg-secondary bg-gradient text-dark border-dark" th:each="pedido : ${pedidos}">
-            <p>ID: <span th:text="${pedido.id}"></span></p>
-            <p>TOTAL: <span th:text="${pedido.total}"></span></p>
-            <p>FECHA: <span th:text="${pedido.fecha}"></span></p>
-            <p>CLIENTE: <a class="text-danger" th:href="@{/clientes/{id}(id=${pedido.id_cliente})}" target="_blank" th:text="${pedido.id_cliente}"></a></p>
+        <li class="list-group-item bg-dark bg-gradient text-white" th:each="pedido : ${pedidos}">
+            <p th:class="${pedido.total == comercial.totalMax ? 'bg-success text-white' : (pedido.total == comercial.totalMin ? 'bg-warning' : '')}">
+                ID: <span th:text="${pedido.id}"></span>
+            </p>
+
+            <p th:class="${pedido.total == comercial.totalMax ? 'bg-success text-white' : (pedido.total == comercial.totalMin ? 'bg-warning' : '')}">
+                <span th:text="#{msg.total.comercial}"></span>: <span th:text="${pedido.total}"></span>
+            </p>
+
+            <p th:class="${pedido.total == comercial.totalMax ? 'bg-success text-white' : (pedido.total == comercial.totalMin ? 'bg-warning' : '')}">
+                <span th:text="#{msg.fecha.comercial}"></span>: <span th:text="${pedido.fecha}"></span>
+            </p>
+
+            <p th:class="${pedido.total == comercial.totalMax ? 'bg-success text-white' : (pedido.total == comercial.totalMin ? 'bg-warning' : '')}">
+                <span th:text="#{msg.comercial.comercial}"></span>: <span th:text="${pedido.id_comercial}"></span>
+            </p>
+
+            <p th:class="${pedido.total == comercial.totalMax ? 'bg-success text-white' : (pedido.total == comercial.totalMin ? 'bg-warning' : '')}">
+                <span th:text="#{msg.cliente.comercial}"></span>: <span> <a th:href="@{/clientes/{id}(id=${pedido.id_cliente})}" target="_blank" th:text="${pedido.getNombreCliente()}"></a></span>
+            </p>
+        </li>
+    </ul>
+</div>
+
+<div class="container mt-3">
+    <h3 class="text-white" th:text="#{msg.title.clientes}"></h3>
+    <ul class="list-group">
+        <li th:each="entry : ${clientes}" class="list-group-item bg-dark bg-gradient text-white">
+            <p>
+                <span th:text="${entry.key.nombre}"></span>:
+                <span th:text="${entry.value}"></span> €
+            </p>
         </li>
     </ul>
 </div>
