@@ -2,30 +2,20 @@ package org.iesvdm.dao;
 
 import java.util.List;
 import java.util.Optional;
-
-import org.iesvdm.modelo.Cliente;
 import org.iesvdm.modelo.Comercial;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
-
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
-import javax.swing.text.html.Option;
-
-//Anotación lombok para logging (traza) de la aplicación
 @Slf4j
 @Repository
-//Utilizo lombok para generar el constructor
 @AllArgsConstructor
 public class ComercialDAOImpl implements ComercialDAO {
 
-	//JdbcTemplate se inyecta por el constructor de la clase automáticamente
-	//
 	private JdbcTemplate jdbcTemplate;
 	private JdbcClient jdbcClient;
 
@@ -103,8 +93,6 @@ public class ComercialDAOImpl implements ComercialDAO {
 
 	@Override
 	public void delete(long id) {
-
-		//Borramos todos los pedidos que coincidan con el id de comercial
 		String queryEliminacionCascada = """
                 DELETE FROM pedido WHERE id_comercial = :id
                 """;
@@ -114,7 +102,6 @@ public class ComercialDAOImpl implements ComercialDAO {
 
 		log.info("Borrados {} registros",rowsDeleted1);
 
-		//Borramos el comercial
 		String query = """
                 DELETE FROM comercial WHERE id = :id
                 """;
@@ -124,5 +111,4 @@ public class ComercialDAOImpl implements ComercialDAO {
 
 		log.info("Borrados {} registros",rowsDeleted2);
 	}
-
 }

@@ -11,12 +11,9 @@ import org.iesvdm.modelo.Comercial;
 @NoArgsConstructor
 @Builder
 public class ComercialDTO {
-
     Comercial comercial;
-
     double total;
     double media;
     double totalMax;
     double totalMin;
-
 }

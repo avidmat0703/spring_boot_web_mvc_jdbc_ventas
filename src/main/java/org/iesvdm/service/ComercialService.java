@@ -8,33 +8,23 @@ import org.iesvdm.modelo.Comercial;
 import org.iesvdm.modelo.Pedido;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 import java.util.Optional;
 import java.util.OptionalDouble;
 
 @Service
 public class ComercialService {
-
     private ComercialDAO comercialDAO;
 
     @Autowired
     PedidoDAO pedidoDAO;
-    // Se utiliza inyección automática por constructor del framework Spring.
-    // Por tanto, se puede omitir la anotación Autowired
-    // @Autowired
     public ComercialService(ComercialDAO comercialDAO) {
         this.comercialDAO = comercialDAO;
     }
 
     public ComercialDTO getComercialDTO (Integer id) {
-
         Comercial comercial = one(id);
-
-        //Creo lista de pedidos asociados a un comercial
         List<PedidoDTO> pedidoDTOList = pedidoDAO.getAllDTOByComercialId(comercial.getId());
-
-        //Total de totales de pedidos
         double total = pedidoDTOList.stream()
                 .mapToDouble( p -> p.getTotal())
                 .sum();
@@ -57,7 +47,6 @@ public class ComercialService {
                 .totalMax(totalMax.getAsDouble())
                 .totalMin(totalMin.getAsDouble())
                 .build();
-
         return comercialDTO;
     }
 
@@ -90,5 +79,3 @@ public class ComercialService {
         comercialDAO.delete(id);
     }
 }
-
-

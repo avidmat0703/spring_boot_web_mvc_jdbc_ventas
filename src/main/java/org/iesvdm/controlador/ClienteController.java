@@ -1,7 +1,6 @@
 package org.iesvdm.controlador;
 
 import java.util.List;
-
 import org.iesvdm.modelo.Cliente;
 import org.iesvdm.service.ClienteService;
 import org.springframework.stereotype.Controller;
@@ -9,18 +8,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.view.RedirectView;
 
-//Se puede fijar ruta base de las peticiones de este controlador.
-//Los mappings de los métodos tendrían este valor /clientes como
-//prefijo.
-//@RequestMapping("/clientes")
 @Controller
 public class ClienteController {
-
 	private ClienteService clienteService;
 
-	//Se utiliza inyección automática por constructor del framework Spring.
-	//Por tanto, se puede omitir la anotación Autowired
-	//@Autowired
 	public ClienteController(ClienteService clienteService) {
 		this.clienteService = clienteService;
 	}
@@ -82,5 +73,4 @@ public class ClienteController {
 
 		return new RedirectView("/clientes");
 	}
-
 }

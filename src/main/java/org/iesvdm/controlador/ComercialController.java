@@ -4,7 +4,6 @@ import org.iesvdm.dto.ComercialDTO;
 import org.iesvdm.dto.PedidoDTO;
 import org.iesvdm.modelo.Cliente;
 import org.iesvdm.modelo.Comercial;
-import org.iesvdm.modelo.Pedido;
 import org.iesvdm.service.ClienteService;
 import org.iesvdm.service.ComercialService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,8 +14,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.view.RedirectView;
-
-import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.HashMap;
 import java.util.List;
@@ -31,21 +28,17 @@ public class ComercialController {
     @Autowired
     ClienteService clienteService;
 
-    //Se utiliza inyección automática por constructor del framework Spring.
-    //Por tanto, se puede omitir la anotación Autowired
-    //@Autowired
     public ComercialController(ComercialService comercialService) {
         this.comercialService = comercialService;
     }
 
-    @GetMapping("/comerciales") //Al no tener ruta base para el controlador, cada método tiene que tener la ruta completa
+    @GetMapping("/comerciales")
     public String listar(Model model) {
 
         List<Comercial> listaComerciales =  comercialService.listAll();
         model.addAttribute("listaComerciales", listaComerciales);
 
         return "comerciales";
-
     }
 
     @GetMapping("/comerciales/{id}")
@@ -61,7 +54,6 @@ public class ComercialController {
             totalPorCliente.put(cliente, sumtotal);
         }
 
-        // Ordenar el mapa de mayor a menor por el total
         Map<Cliente, Double> sortedTotalPorCliente = totalPorCliente.entrySet()
                 .stream()
                 .sorted(Map.Entry.<Cliente, Double>comparingByValue().reversed())
@@ -78,8 +70,6 @@ public class ComercialController {
 
         return "detalle-comercial";
     }
-
-
 
     @GetMapping("/comerciales/crear") //Al no tener ruta base para el controlador, cada método tiene que tener la ruta completa
     public String crear(@ModelAttribute("comercial") Comercial comercial) {
@@ -101,7 +91,6 @@ public class ComercialController {
         model.addAttribute("comercial", comercial);
 
         return "editar-comercial";
-
     }
 
     @PostMapping("/comerciales/editar/{id}")
@@ -124,5 +113,4 @@ public class ComercialController {
     public String test() {
         return "test";
     }
-
 }
