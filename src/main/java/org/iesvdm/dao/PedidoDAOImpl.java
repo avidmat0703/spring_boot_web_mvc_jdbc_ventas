@@ -53,7 +53,7 @@ public class PedidoDAOImpl implements PedidoDAO{
     public List<Pedido> getAllByComercialId(int id) {
 
         String query = """
-                SELECT * FROM pedido WHERE id_comercial = :id
+                SELECT * FROM pedido WHERE id_comercial = ?
                 """;
 
         RowMapper<Pedido> rowMapperPedido = (rs, rowNum) -> new Pedido(
@@ -65,7 +65,7 @@ public class PedidoDAOImpl implements PedidoDAO{
         );
 
         return jdbcClient.sql(query)
-                .param("id",id)
+                .param(id)
                 .query(rowMapperPedido)
                 .list();
 

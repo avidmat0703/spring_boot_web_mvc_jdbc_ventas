@@ -19,6 +19,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+import jakarta.validation.Valid;
+import org.springframework.validation.BindingResult;
 
 @Controller
 public class ComercialController {
@@ -81,11 +83,13 @@ public class ComercialController {
     }
 
     @PostMapping("/comerciales/crear")
-    public RedirectView submitCrear(@ModelAttribute("comercial") Comercial comercial) {
-
-        comercialService.newComercial(comercial);
-        return new RedirectView("/comerciales") ;
-    }
+        public String submitCrear(@Valid @ModelAttribute("comercial") Comercial comercial, BindingResult bindingResult) {
+            if (bindingResult.hasErrors()){
+                return "crear-comercial";
+            }
+            comercialService.newComercial(comercial);
+            return "redirect:/comerciales";
+        }
 
     @GetMapping("/comerciales/editar/{id}")
     public String editar(Model model, @PathVariable Integer id) {
@@ -98,12 +102,13 @@ public class ComercialController {
     }
 
     @PostMapping("/comerciales/editar/{id}")
-    public RedirectView submitEditar(@ModelAttribute("comercial") Comercial comercial) {
-
-        comercialService.replaceComercial(comercial);
-
-        return new RedirectView("/comerciales");
-    }
+        public String submitEditar(@Valid @ModelAttribute("comercial") Comercial comercial, BindingResult bindingResult) {
+            if (bindingResult.hasErrors()) {
+                return "editar-comercial";
+            }
+            comercialService.replaceComercial(comercial);
+            return "redirect:/comerciales";
+        }
 
     @PostMapping("/comerciales/borrar/{id}")
     public RedirectView submitBorrar(@PathVariable Integer id) {

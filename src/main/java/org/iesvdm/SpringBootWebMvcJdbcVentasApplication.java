@@ -49,7 +49,7 @@ public class SpringBootWebMvcJdbcVentasApplication implements CommandLineRunner{
 			clienteDAO.update(cliente.get());
 		}
 
-		Cliente clienteNew = new Cliente(0, "Jose M", "Martín", null, "Málaga", 100);
+		Cliente clienteNew = new Cliente(0, "Jose M", "Martín", null, "Málaga", 100, "JoseM@gmail.com");
 
 		clienteDAO.create(clienteNew);
 		

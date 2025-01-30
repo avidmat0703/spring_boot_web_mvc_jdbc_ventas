@@ -29,6 +29,7 @@
 			<th th:text="#{msg.trApellido2.clientes}"></th>
 			<th th:text="#{msg.trCiudad.clientes}"></th>
 			<th th:text="#{msg.trCategoria.clientes}"></th>
+			<th th:text="#{msg.correo}"></th>
 			<th th:text="#{msg.trAccion.clientes}"></th>
 		</tr>
 		</thead>
@@ -40,6 +41,7 @@
 			<td th:text="${cliente.apellido2 ?: '&nbsp;'}">apellido2</td>
 			<td th:text="${cliente.ciudad}">ciudad</td>
 			<td th:text="${cliente.categoria}">categoría</td>
+			<td th:text="${cliente.correo}">correo</td>
 			<td>
 				<form th:action="@{/clientes/__${cliente.id}__}" style="display: inline;">
 					<input type="submit" class="btn btn-success btn-sm" th:value="#{msg.inputVerDetalle.clientes}"/>

@@ -43,6 +43,11 @@
         <label class="form-label" th:text="#{msg.trCategoria.clientes}"></label>
         <input type="text" th:value="${cliente.categoria}" value="categoría" class="form-control" readonly="readonly"/>
     </div>
+
+    <div class="mb-3">
+        <label class="form-label text-white" th:text="#{msg.correo}"></label>
+        <input type="text" th:value="${cliente.correo}" class="form-control" readonly="readonly"/>
+    </div>
 </div>
 
 <div class="container mt-5">
