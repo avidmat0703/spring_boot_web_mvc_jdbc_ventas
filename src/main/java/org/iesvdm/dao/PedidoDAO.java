@@ -14,4 +14,5 @@ public interface PedidoDAO {
     public Optional<Pedido> find(int id);
     public void update(Pedido pedido);
     public void delete(long id);
+    public int contarPedidosEnPeriodo (int id_comercial, int id_cliente, int meses);
 }

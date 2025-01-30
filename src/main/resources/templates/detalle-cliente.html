@@ -44,6 +44,21 @@
         <input type="text" th:value="${cliente.categoria}" value="categoría" class="form-control" readonly="readonly"/>
     </div>
 </div>
+
+<div class="container mt-5">
+    <h3 class="text-white" th:text="#{msg.title.comerciales}"></h3>
+    <ul class="list-group">
+        <li class="list-group-item bg-dark bg-gradient text-white" th:each="comercial : ${comerciales}">
+            <p><strong>Nombre:</strong> <span th:text="${comercial.nombre}"></span> <span th:text="${comercial.apellido1}"></span></p>
+            <p><strong>Pedidos con cliente:</strong> <span th:text="${comercial.numeroPedidosPorCliente}"></span></p>
+            <h4>Pedidos en los últimos periodos:</h4>
+            <p><strong>Trimestre:</strong> <span th:text="${comercial.pedidosUltimoTrimestre}"></span></p>
+            <p><strong>Semestre:</strong> <span th:text="${comercial.pedidosUltimoSemestre}"></span></p>
+            <p><strong>Año:</strong> <span th:text="${comercial.pedidosUltimoAnio}"></span></p>
+            <p><strong>Lustro:</strong> <span th:text="${comercial.pedidosUltimoLustro}"></span></p>
+        </li>
+    </ul>
+</div>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+N5+GamlvcC1zM8jP/nF2ndE6mgD" crossorigin="anonymous"></script>
 </body>
 </html>

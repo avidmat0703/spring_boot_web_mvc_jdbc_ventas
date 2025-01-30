@@ -18,5 +18,4 @@ public class PedidoDTO {
     int id_comercial;
     String nombreCliente;
     String nombreComercial;
-
 }

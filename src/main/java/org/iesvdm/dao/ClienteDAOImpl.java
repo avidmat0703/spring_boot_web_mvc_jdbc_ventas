@@ -4,8 +4,11 @@ import java.sql.PreparedStatement;
 import java.util.List;
 import java.util.Optional;
 import org.iesvdm.modelo.Cliente;
+import org.iesvdm.modelo.Comercial;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
@@ -17,6 +20,8 @@ public class ClienteDAOImpl implements ClienteDAO {
 
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
+	@Autowired
+	private JdbcClient jdbcClient;
 
 	@Override
 	public synchronized void create(Cliente cliente) {
@@ -60,6 +65,7 @@ public class ClienteDAOImpl implements ClienteDAO {
 		log.info("Devueltos {} registros.", listFab.size());
 
 		return listFab;
+
 	}
 
 	@Override
@@ -113,5 +119,42 @@ public class ClienteDAOImpl implements ClienteDAO {
 
 		log.info("Delete de pedido con {} registros eliminados.", rows1);
 		log.info("Delete de Cliente con {} registros eliminados.", rows);
+
+
+	}
+
+	@Override
+	public List<Comercial> getComercialesById(int id) {
+
+		String query = """
+			SELECT com.*
+			FROM comercial com
+			JOIN pedido p ON com.id = p.id_comercial
+			WHERE p.id_cliente = ?
+			""";
+
+		BeanPropertyRowMapper<Comercial> rowMapper = new BeanPropertyRowMapper<>(Comercial.class);
+
+		return jdbcClient.sql(query)
+				.param(id)
+				.query(rowMapper)
+				.list();
+	}
+
+	@Override
+	public Integer getPedidosEnComun(int id_cliente, int id_comercial) {
+
+		String query = """
+			SELECT count(*)
+			FROM comercial com
+			JOIN pedido p ON com.id = p.id_comercial
+			WHERE p.id_cliente = ? AND p.id_comercial = ?
+			""";
+
+		return jdbcClient.sql(query)
+							.param(id_cliente)
+							.param(id_comercial)
+							.query(Integer.class)
+							.single();
 	}
 }

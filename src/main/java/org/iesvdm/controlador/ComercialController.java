@@ -39,6 +39,7 @@ public class ComercialController {
         model.addAttribute("listaComerciales", listaComerciales);
 
         return "comerciales";
+
     }
 
     @GetMapping("/comerciales/{id}")
@@ -71,7 +72,9 @@ public class ComercialController {
         return "detalle-comercial";
     }
 
-    @GetMapping("/comerciales/crear") //Al no tener ruta base para el controlador, cada método tiene que tener la ruta completa
+
+
+    @GetMapping("/comerciales/crear")
     public String crear(@ModelAttribute("comercial") Comercial comercial) {
 
         return "crear-comercial";
@@ -91,6 +94,7 @@ public class ComercialController {
         model.addAttribute("comercial", comercial);
 
         return "editar-comercial";
+
     }
 
     @PostMapping("/comerciales/editar/{id}")

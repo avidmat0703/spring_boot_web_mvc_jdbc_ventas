@@ -16,4 +16,5 @@ public class ComercialDTO {
     double media;
     double totalMax;
     double totalMin;
+
 }

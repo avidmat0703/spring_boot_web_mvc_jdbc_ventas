@@ -73,6 +73,7 @@ public class PedidoDAOImpl implements PedidoDAO{
 
     @Override
     public List<PedidoDTO> getAllDTOByComercialId(int id_comercial) {
+
         String query = """
             SELECT p.*, c.nombre AS nombreCliente, com.nombre AS nombreComercial
             FROM pedido p
@@ -93,6 +94,7 @@ public class PedidoDAOImpl implements PedidoDAO{
 
     @Override
     public List<PedidoDTO> getAllDTOByClienteId(int id_cliente) {
+
         String query = """
             SELECT p.*, c.nombre AS nombreCliente, com.nombre AS nombreComercial
             FROM pedido p
@@ -118,9 +120,29 @@ public class PedidoDAOImpl implements PedidoDAO{
 
     @Override
     public void update(Pedido pedido) {
+
     }
 
     @Override
     public void delete(long id) {
+
+    }
+
+    @Override
+    public int contarPedidosEnPeriodo(int id_comercial, int id_cliente, int meses) {
+        String query = """
+               SELECT COUNT(*)
+               FROM pedido
+               WHERE id_cliente = ?
+               AND id_comercial = ?
+               AND fecha >= CURDATE() - INTERVAL ? MONTH
+			""";
+
+        return jdbcClient.sql(query)
+                .param(id_cliente)
+                .param(id_comercial)
+                .param(meses)
+                .query(Integer.class)
+                .single();
     }
 }

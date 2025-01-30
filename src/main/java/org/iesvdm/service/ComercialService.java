@@ -14,6 +14,7 @@ import java.util.OptionalDouble;
 
 @Service
 public class ComercialService {
+
     private ComercialDAO comercialDAO;
 
     @Autowired
@@ -23,20 +24,20 @@ public class ComercialService {
     }
 
     public ComercialDTO getComercialDTO (Integer id) {
+
         Comercial comercial = one(id);
+
         List<PedidoDTO> pedidoDTOList = pedidoDAO.getAllDTOByComercialId(comercial.getId());
+
         double total = pedidoDTOList.stream()
-                .mapToDouble( p -> p.getTotal())
+                .mapToDouble(PedidoDTO::getTotal)
                 .sum();
-
         OptionalDouble totalMax = pedidoDTOList.stream()
-                .mapToDouble( p -> p.getTotal())
+                .mapToDouble(PedidoDTO::getTotal)
                 .max();
-
         OptionalDouble totalMin = pedidoDTOList.stream()
-                .mapToDouble( p -> p.getTotal())
+                .mapToDouble(PedidoDTO::getTotal)
                 .min();
-
         int cantidadPedidos = pedidoDTOList.size();
         double media = total/cantidadPedidos;
 
@@ -47,6 +48,7 @@ public class ComercialService {
                 .totalMax(totalMax.getAsDouble())
                 .totalMin(totalMin.getAsDouble())
                 .build();
+
         return comercialDTO;
     }
 

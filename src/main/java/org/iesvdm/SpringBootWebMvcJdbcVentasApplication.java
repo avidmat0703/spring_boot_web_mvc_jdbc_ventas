@@ -26,26 +26,41 @@ public class SpringBootWebMvcJdbcVentasApplication implements CommandLineRunner{
 		log.info("*******************************");
 		log.info("*Prueba de arranque ClienteDAO*");
 		log.info("*******************************");
+		
 		clienteDAO.getAll().forEach(c -> log.info("Cliente: {}", c));
+		
 		int id = 1;
 		Optional<Cliente> cliente = clienteDAO.find(id);
+		
 		if (cliente.isPresent()) {
 			log.info("Cliente {}: {}", id, cliente.get());
+			
 			String nombreOld = cliente.get().getNombre();
+			
 			cliente.get().setNombre("Jose M");
+			
 			clienteDAO.update(cliente.get());
+			
 			cliente = clienteDAO.find(id);
+			
 			log.info("Cliente {}: {}", id, cliente.get());
+
 			cliente.get().setNombre(nombreOld);
 			clienteDAO.update(cliente.get());
 		}
 
 		Cliente clienteNew = new Cliente(0, "Jose M", "Martín", null, "Málaga", 100);
+
 		clienteDAO.create(clienteNew);
+		
 		log.info("Cliente nuevo con id = {}", clienteNew.getId());
+		
 		clienteDAO.getAll().forEach(c -> log.info("Cliente: {}", c));
+
 		clienteDAO.delete(clienteNew.getId());
+		
 		clienteDAO.getAll().forEach(c -> log.info("Cliente: {}", c));
+		
 		log.info("************************************");
 		log.info("*FIN: Prueba de arranque ClienteDAO*");
 		log.info("************************************");
